@@ -1,40 +1,36 @@
-const express = require("express");
-const mysql = require("mysql");
+//imports
 const cors = require("cors");
+const express = require("express");
+const colors = require("colors");
+const mysql = require("mysql");
+const morgan = require("morgan"); //log api hits
+const dotenv = require("dotenv");
+const mySqlPool = require("./config/db");
 
-// making the app an express one
+//app
+
+dotenv.config();
+
 const app = express();
-// allowing cors
-app.use(cors());
+//middleware
+app.use(morgan("dev"));
 
-// db connection
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "test", // use "database" instead of "db"
-});
-
-// connect to the database
-db.connect((err) => {
-  if (err) {
-    console.error("Database connection failed: " + err.stack);
-    return;
-  }
-  console.log("Connected to database.");
-});
+//routes
 
 app.get("/", (req, res) => {
-  const sql = "SELECT * FROM student where id=2";
-  db.query(sql, (err, data) => {
-    if (err) {
-      console.error("Error fetching data:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-    return res.status(200).json({ data });
-  });
+  res.status(200).send(" <h1>Furqan and Mehrish are cool!</h1>");
 });
 
-app.listen(4001, () => {
-  console.log("Server running");
-});
+const PORT = process.env.PORT;
+
+mySqlPool
+  .query("SELECT 1")
+  .then(() => {
+    console.log("MYSQL DB connected".bgCyan.white);
+    app.listen(PORT, () => {
+      console.log(`Server listening on ${PORT}`.bgMagenta.white);
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
