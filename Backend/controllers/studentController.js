@@ -87,15 +87,53 @@ const createStudent = async (req, res) => {
       success: true,
       message: "Student created",
     });
-    
   } catch (error) {
     console.error(error);
     return res.status(500).send({
       success: false,
       message: "Error creating student",
+      error,
+    });
+  }
+};
+
+const editStudent = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+
+    if (!studentId) {
+      return res.status(404).send({
+        success: false,
+        message: "Invalid ID or provide ID",
+      });
+    }
+
+    const { name, email, medium } = req.body;
+
+    const data = await db.query(
+      `update student set name=?, email=?, medium=? where id=?`,
+      [name, email, medium, studentId]
+    );
+
+    if (!data) {
+      return res.status(404).send({
+        success: false,
+        message: "Provide necessary fields- Data error",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Record updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      success: false,
+      message: "Error updating student record",
       error: error.message,
     });
   }
 };
 
-module.exports = { getStudents, getStudentbyID, createStudent };
+module.exports = { getStudents, getStudentbyID, createStudent, editStudent };
