@@ -136,4 +136,46 @@ const editStudent = async (req, res) => {
   }
 };
 
-module.exports = { getStudents, getStudentbyID, createStudent, editStudent };
+const deleteStudent = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    console.log(studentId);
+    if (!studentId) {
+      return res.status(404).send({
+        success: false,
+        message: "Invalid ID",
+      });
+    }
+    const data = await db.query(`DELETE FROM student WHERE id = ?`, [
+      studentId,
+    ]);
+
+    if (data.affectedRows === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "No student found with the given ID",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Student deleted successfully",
+      student: data[0],
+    });
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    return res.status(500).send({
+      success: false,
+      message: "Error deleting student",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  getStudents,
+  getStudentbyID,
+  createStudent,
+  editStudent,
+  deleteStudent,
+};
