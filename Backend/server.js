@@ -17,8 +17,10 @@ app.use(morgan("dev"));
 
 //routes
 
+app.use("/api/v1/students", require("./routes/studentRoutes"));
+
 app.get("/", (req, res) => {
-  res.status(200).send(" <h1>Furqan and Mehrish are cool!</h1>");
+  res.status(200).send(" <h1>Furqan and Mehrish are cool! ikrrr</h1>");
 });
 
 const PORT = process.env.PORT;
