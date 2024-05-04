@@ -60,4 +60,42 @@ const getStudentbyID = async (req, res) => {
   }
 };
 
-module.exports = { getStudents, getStudentbyID };
+const createStudent = async (req, res) => {
+  try {
+    const { name, email, medium } = req.body;
+
+    if (!name || !email || !medium) {
+      return res.status(400).send({
+        success: false,
+        message: "Please provide all fields",
+      });
+    }
+
+    const data = await db.query(
+      `INSERT INTO student (name, email, medium) VALUES (?, ?, ?)`,
+      [name, email, medium]
+    );
+
+    if (!data) {
+      return res.status(404).send({
+        success: false,
+        message: "Error in Insert query",
+      });
+    }
+
+    res.status(201).send({
+      success: true,
+      message: "Student created",
+    });
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error creating student",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { getStudents, getStudentbyID, createStudent };
