@@ -5,13 +5,10 @@ import "./App.css";
 // import axios from "axios";
 
 function App() {
-  const [count, setCount] = useState(0);
-  axios.get('')
-
   return (
     <>
       <div className="rounded-xl bg-slate-600 items-center justify-center flex text-center h-dvh w-dvw">
-        Hello
+        Hello how are you
       </div>
     </>
   );

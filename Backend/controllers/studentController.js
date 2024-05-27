@@ -2,9 +2,9 @@
 
 const db = require("../config/db");
 
-const getStudents = async (req, res) => {
+const getMembers = async (req, res) => {
   try {
-    const data = await db.query("select * from student");
+    const data = await db.query("select * from members");
     if (!data) {
       return res.status(404).send({
         success: false,
@@ -13,14 +13,14 @@ const getStudents = async (req, res) => {
     }
     res.status(200).send({
       success: true,
-      message: "All students records",
-      students: data[0],
+      message: "All members records",
+      members: data[0],
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
-      message: "Error in get students API",
+      message: "Error in get members API",
       error,
     });
   }
@@ -28,17 +28,17 @@ const getStudents = async (req, res) => {
 
 //get student by id
 
-const getStudentbyID = async (req, res) => {
+const getMemberbyId = async (req, res) => {
   try {
-    const studentId = req.params.id; //should be same as server file
-    if (!studentId) {
+    const memberId = req.params.id; //should be same as server file
+    if (!memberId) {
       return res.status(404).send({
         success: false,
-        message: "Student ID invalid",
+        message: "Member ID invalid",
       });
     }
-    const data = await db.query(`select * from student where id=?`, [
-      studentId,
+    const data = await db.query(`select * from members where member_id=?`, [
+      memberId,
     ]);
     if (!data) {
       return res.status(404).send({
@@ -48,19 +48,21 @@ const getStudentbyID = async (req, res) => {
     }
     res.status(200).send({
       success: true,
-      studentDetails: data[0],
+      memberDetails: data[0],
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
       success: false,
-      message: "Error in GET student by ID",
+      message: "Error in GET member by ID",
       error,
     });
   }
 };
 
-const createStudent = async (req, res) => {
+//create a member
+
+const createMember = async (req, res) => {
   try {
     const { name, email, medium } = req.body;
 
@@ -136,46 +138,46 @@ const editStudent = async (req, res) => {
   }
 };
 
-const deleteStudent = async (req, res) => {
+const deleteMember = async (req, res) => {
   try {
-    const studentId = req.params.id;
-    console.log(studentId);
-    if (!studentId) {
+    const memberID = req.params.id;
+    console.log(memberID);
+    if (!memberID) {
       return res.status(404).send({
         success: false,
         message: "Invalid ID",
       });
     }
-    const data = await db.query(`DELETE FROM student WHERE id = ?`, [
-      studentId,
+    const data = await db.query(`DELETE FROM members WHERE member_id = ?`, [
+      memberID,
     ]);
 
     if (data.affectedRows === 0) {
       return res.status(404).send({
         success: false,
-        message: "No student found with the given ID",
+        message: "No member found with the given ID",
       });
     }
 
     res.status(200).send({
       success: true,
-      message: "Student deleted successfully",
+      message: "Member deleted successfully",
       student: data[0],
     });
   } catch (error) {
-    console.error("Error deleting student:", error);
+    console.error("Error deleting member:", error);
     return res.status(500).send({
       success: false,
-      message: "Error deleting student",
+      message: "Error deleting member",
       error: error.message,
     });
   }
 };
 
 module.exports = {
-  getStudents,
-  getStudentbyID,
-  createStudent,
+  getMembers,
+  getMemberbyId,
+  createMember,
   editStudent,
-  deleteStudent,
+  deleteMember,
 };

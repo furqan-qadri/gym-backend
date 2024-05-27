@@ -21,7 +21,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/students", require("./routes/studentRoutes"));
 
 app.get("/", (req, res) => {
-  res.status(200).send(" <h1>Furqan and Mehrish are cool! ikrrr</h1>");
+  res.status(200).send(" <h1>Furqan and Areeba are a cool couple!! yoyo</h1>");
 });
 
 const PORT = process.env.PORT;
