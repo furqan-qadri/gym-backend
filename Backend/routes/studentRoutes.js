@@ -3,9 +3,7 @@ const {
   getMembers,
   getMemberbyId,
   createMember,
-  editStudent,
   deleteMember,
-  getPlanDetails,
 } = require("../controllers/studentController");
 
 //creating router object
@@ -17,9 +15,9 @@ router.get("/getall", getMembers);
 router.get("/:id", getMemberbyId);
 
 //update by id
-router.put("/update/:id", editStudent);
+// router.put("/update/:id", editStudent);
 router.delete("/delete/:id", deleteMember);
-router.post("/create", createMember);
-router.get("/getplandetails", getPlanDetails);
+// router.post("/create", createMember);
+// router.get("/getplandetails", getPlanDetails);
 
 module.exports = router;
