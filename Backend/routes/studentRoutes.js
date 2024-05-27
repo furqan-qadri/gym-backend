@@ -14,7 +14,7 @@ const router = express.Router();
 //get all students list get
 router.get("/getall", getMembers);
 //get by id
-router.get("/get/:id", getMemberbyId);
+router.get("/:id", getMemberbyId);
 
 //update by id
 router.put("/update/:id", editStudent);
