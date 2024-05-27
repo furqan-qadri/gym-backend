@@ -56,7 +56,51 @@ const getTrainerbyId = async (req, res) => {
   }
 };
 
+const deleteTrainer = async (req, res) => {
+  try {
+    const trainerId = req.params.id;
+
+    if (!trainerId) {
+      return res.status(400).send({
+        success: false,
+        message: "Trainer ID is required",
+      });
+    }
+
+    // Update member records associated with the trainer
+    await db.query("UPDATE Members SET trainer_id = NULL WHERE trainer_id = ?", [trainerId]);
+
+    // Delete salary records associated with the trainer
+    await db.query("DELETE FROM Salaries WHERE trainer_id = ?", [trainerId]);
+
+    // Then delete the trainer
+    const result = await db.query("DELETE FROM Trainers WHERE trainer_id = ?", [trainerId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "Trainer not found",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Trainer deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in deleting trainer",
+      error,
+    });
+  }
+};
+
+
+
 module.exports = {
   getTrainers,
   getTrainerbyId,
+  deleteTrainer,
 };
