@@ -21,6 +21,7 @@ app.use(morgan("dev"));
 app.use("/api/v1/gym/members", require("./routes/studentRoutes"));
 app.use("/api/v1/gym/trainers", require("./routes/trainerRoutes"));
 app.use("/api/v1/gym/announcements", require("./routes/announcementRoutes"));
+app.use("/api/v1/gym/plans", require("./routes/planRoutes"));
 
 app.get("/", (req, res) => {
   res.status(200).send(" <h1>Furqan and Areeba are a cool couple!! yoyo</h1>");
