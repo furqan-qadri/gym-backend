@@ -174,10 +174,51 @@ const deleteMember = async (req, res) => {
   }
 };
 
+const getPlanDetails = async (req, res) => {
+  try {
+    // Query to get total number of members associated with plan_id = 1
+    const [totalMembersPlan1] = await db.query(
+      "SELECT COUNT(*) AS total_members_plan_1 FROM Members WHERE plan_id = 3"
+    );
+    // Query to get total number of members
+    const [totalMembers] = await db.query(
+      "SELECT COUNT(*) AS total_members FROM Members"
+    );
+    // Query to get cost of plan_id = 1
+    const [plan1Cost] = await db.query(
+      "SELECT cost FROM Plans WHERE plan_id = 3"
+    );
+
+    const adoption =
+      (totalMembersPlan1[0].total_members_plan_1 /
+        totalMembers[0].total_members) *
+      100;
+
+    const revenueLastMonth =
+      plan1Cost[0].cost * totalMembersPlan1[0].total_members_plan_1;
+
+    res.status(200).json({
+      success: true,
+      activeMembers: totalMembersPlan1[0].total_members_plan_1,
+      revenueLastMonth: revenueLastMonth,
+      adoption: adoption.toFixed(1),
+      plan1Cost: plan1Cost[0] ? plan1Cost[0].cost : null,
+    });
+  } catch (error) {
+    console.error("Error in getMemberStats:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in retrieving member stats",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getMembers,
   getMemberbyId,
   createMember,
   editStudent,
   deleteMember,
+  getPlanDetails,
 };

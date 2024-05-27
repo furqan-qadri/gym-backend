@@ -5,6 +5,7 @@ const {
   createMember,
   editStudent,
   deleteMember,
+  getPlanDetails,
 } = require("../controllers/studentController");
 
 //creating router object
@@ -19,5 +20,6 @@ router.get("/get/:id", getMemberbyId);
 router.put("/update/:id", editStudent);
 router.delete("/delete/:id", deleteMember);
 router.post("/create", createMember);
+router.get("/getplandetails", getPlanDetails);
 
 module.exports = router;
