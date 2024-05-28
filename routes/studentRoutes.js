@@ -4,6 +4,7 @@ const {
   getMemberbyId,
   createMember,
   deleteMember,
+  updateMember
 } = require("../controllers/studentController");
 
 //creating router object
@@ -15,9 +16,9 @@ router.get("/getall", getMembers);
 router.get("/:id", getMemberbyId);
 
 //update by id
-// router.put("/update/:id", editStudent);
+router.put("/update/:id", updateMember);
 router.delete("/delete/:id", deleteMember);
-// router.post("/create", createMember);
+router.post("/create", createMember);
 // router.get("/getplandetails", getPlanDetails);
 
 module.exports = router;
