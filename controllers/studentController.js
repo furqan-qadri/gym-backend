@@ -60,45 +60,6 @@ const getMemberbyId = async (req, res) => {
   }
 };
 
-//create a member
-
-const createMember = async (req, res) => {
-  try {
-    const { name, email, medium } = req.body;
-
-    if (!name || !email || !medium) {
-      return res.status(400).send({
-        success: false,
-        message: "Please provide all fields",
-      });
-    }
-
-    const data = await db.query(
-      `INSERT INTO student (name, email, medium) VALUES (?, ?, ?)`,
-      [name, email, medium]
-    );
-
-    if (!data) {
-      return res.status(404).send({
-        success: false,
-        message: "Error in Insert query",
-      });
-    }
-
-    res.status(201).send({
-      success: true,
-      message: "Student created",
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send({
-      success: false,
-      message: "Error creating student",
-      error,
-    });
-  }
-};
-
 const deleteMember = async (req, res) => {
   try {
     const memberId = req.params.id;
@@ -117,7 +78,9 @@ const deleteMember = async (req, res) => {
     await db.query("DELETE FROM Payments WHERE member_id = ?", [memberId]);
 
     // Then delete the member
-    const result = await db.query("DELETE FROM Members WHERE member_id = ?", [memberId]);
+    const result = await db.query("DELETE FROM Members WHERE member_id = ?", [
+      memberId,
+    ]);
 
     if (result.affectedRows === 0) {
       return res.status(404).send({
@@ -140,12 +103,127 @@ const deleteMember = async (req, res) => {
   }
 };
 
+const createMember = async (req, res) => {
+  try {
+    const {
+      full_name,
+      age,
+      sex,
+      IC_Passport,
+      phone,
+      email_id,
+      address,
+      sign_up_date,
+      plan_id,
+      trainer_id,
+      date_of_birth,
+    } = req.body;
 
+    // Check if required fields are provided
+    if (
+      !full_name ||
+      !age ||
+      !sex ||
+      !IC_Passport ||
+      !phone ||
+      !email_id ||
+      !address ||
+      !sign_up_date ||
+      !date_of_birth
+    ) {
+      return res.status(400).send({
+        success: false,
+        message: "Required fields are missing",
+      });
+    }
 
+    // Insert the new member into the database
+    const result = await db.query(
+      "INSERT INTO Members (full_name, age, sex, IC_Passport, phone, email_id, address, sign_up_date, plan_id, trainer_id, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        full_name,
+        age,
+        sex,
+        IC_Passport,
+        phone,
+        email_id,
+        address,
+        sign_up_date,
+        plan_id,
+        trainer_id,
+        date_of_birth,
+      ]
+    );
+
+    res.status(201).send({
+      success: true,
+      message: "Member created successfully",
+      memberId: result[0].insertId,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in creating member",
+      error,
+    });
+  }
+};
+
+const updateMember = async (req, res) => {
+  try {
+    const memberId = req.params.id;
+    const fieldsToUpdate = req.body;
+
+    // Check if memberId is provided
+    if (!memberId) {
+      return res.status(400).send({
+        success: false,
+        message: "Member ID is required",
+      });
+    }
+
+    // Build the dynamic update query based on the fields provided
+    let query = "UPDATE Members SET";
+    let queryParams = [];
+    Object.keys(fieldsToUpdate).forEach((field, index) => {
+      query += ` ${field} = ?`;
+      if (index < Object.keys(fieldsToUpdate).length - 1) {
+        query += ",";
+      }
+      queryParams.push(fieldsToUpdate[field]);
+    });
+    query += " WHERE member_id = ?";
+    queryParams.push(memberId);
+
+    // Update the member in the database
+    const result = await db.query(query, queryParams);
+
+    if (result[0].affectedRows === 0) {
+      return res.status(404).send({
+        success: false,
+        message: "Member not found or no changes made",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Member updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in updating member",
+      error,
+    });
+  }
+};
 
 module.exports = {
   getMembers,
   getMemberbyId,
   createMember,
   deleteMember,
+  updateMember,
 };
