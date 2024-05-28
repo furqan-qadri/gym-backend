@@ -1,44 +1,18 @@
-Gym Management Backend
-This backend project is designed to manage gym members, trainers, fee payments, announcements, attendance, and other related functionalities. It is built using Node.js and MySQL.
 
+### Database Schema
 
-Installation
-Database Schema
-API Endpoints
-Members
-Trainers
-Plans
-Announcements
-Payments
-Salaries
-Attendance
-License
-Installation
-Clone the repository:
+The database schema includes tables for members, trainers, plans, announcements, payments, salaries, and attendance.
 
-sh
-Copy code
-git clone https://github.com/yourusername/gym-management-backend.git
-Navigate to the project directory:
+### API Endpoints
 
-sh
-Copy code
-cd gym-management-backend
-Install the dependencies:
+- **Members**: CRUD operations for managing gym members.
+- **Trainers**: CRUD operations for managing gym trainers.
+- **Plans**: CRUD operations for managing gym membership plans.
+- **Announcements**: CRUD operations for managing gym announcements.
+- **Payments**: CRUD operations for managing fee payments.
+- **Salaries**: CRUD operations for managing trainer salaries.
+- **Attendance**: Record and retrieve member attendance.
 
-sh
-Copy code
-npm install
-Create a .env file in the root directory and add your MySQL database credentials:
+### License
 
-env
-Copy code
-DB_HOST=your-database-host
-DB_USER=your-database-username
-DB_PASSWORD=your-database-password
-DB_NAME=your-database-name
-Run the database migrations (if any) and start the server:
-
-sh
-Copy code
-npm start
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
