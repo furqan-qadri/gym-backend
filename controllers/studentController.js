@@ -4,7 +4,7 @@ const db = require("../config/db");
 
 const getMembers = async (req, res) => {
   try {
-    const data = await db.query("select * from members");
+    const data = await db.query("select * from Members");
     if (!data) {
       return res.status(404).send({
         success: false,
@@ -37,7 +37,7 @@ const getMemberbyId = async (req, res) => {
         message: "Member ID invalid",
       });
     }
-    const data = await db.query(`select * from members where member_id=?`, [
+    const data = await db.query(`select * from Members where member_id=?`, [
       memberId,
     ]);
     if (!data) {
