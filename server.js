@@ -4,9 +4,28 @@ const morgan = require("morgan");
 const dotenv = require("dotenv");
 const mysql = require("mysql2/promise");
 const cors = require("cors");
+dotenv.config();
+
+const formData = require("form-data");
+const Mailgun = require("mailgun.js");
+const mailgun = new Mailgun(formData);
+const mg = mailgun.client({
+  username: "api",
+  key: process.env.MAILGUN_API_KEY,
+});
+
+mg.messages
+  .create("mail.furqanqadri.com", {
+    from: "Furqan Qadri <contact@mail.furqanqadri.com>",
+    to: ["furqanqadri1@outlook.com"],
+    subject: "for the outlook only? yup baby",
+    text: "Testing some Mailgun awesomeness!",
+    html: "<h1>Testing some Mailgun awesomeness!</h1>",
+  })
+  .then((msg) => console.log(msg)) // logs response data
+  .catch((err) => console.log(err)); // logs any error
 
 // Load environment variables
-dotenv.config();
 
 // Create an Express application
 const app = express();
@@ -42,7 +61,7 @@ app.get("/", (req, res) => {
 });
 
 // Start the server and test the database connection
-const PORT = process.env.PORT || 8090;
+const PORT = process.env.PORT;
 
 (async function startServer() {
   try {
