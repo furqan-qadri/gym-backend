@@ -85,12 +85,19 @@ app.post("/subscribe", (req, res) => {
     .create("mail.furqanqadri.com", {
       from: "Furqan Qadri <contact@mail.furqanqadri.com>",
       to: email,
-      subject: "for the outlook only? yup baby",
+      subject: "Welcome to Kashmir",
       text: "Testing some Mailgun awesomeness!",
       html: "<h1>Testing some Mailgun awesomeness!</h1>",
     })
-    .then((msg) => console.log(msg)) // logs response data
-    .catch((err) => console.log(err)); // logs any error
+    .then((msg) => {
+      console.log("Email sent successfully");
+      console.log(msg); // logs response data
+      res.status(200).json({ message: "Email sent successfully", msg });
+    })
+    .catch((err) => {
+      console.error("Mailgun Error:", err);
+      res.status(500).json({ error: err.message });
+    });
 });
 
 // Start the server and test the database connection
