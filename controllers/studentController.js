@@ -116,7 +116,6 @@ const createMember = async (req, res) => {
       sign_up_date,
       plan_id,
       trainer_id,
-      date_of_birth,
     } = req.body;
 
     // Check if required fields are provided
@@ -128,8 +127,7 @@ const createMember = async (req, res) => {
       !phone ||
       !email_id ||
       !address ||
-      !sign_up_date ||
-      !date_of_birth
+      !sign_up_date
     ) {
       return res.status(400).send({
         success: false,
@@ -137,9 +135,9 @@ const createMember = async (req, res) => {
       });
     }
 
-    // Insert the new member into the database
+    // Insert the new member into the database without date_of_birth
     const result = await db.query(
-      "INSERT INTO Members (full_name, age, sex, IC_Passport, phone, email_id, address, sign_up_date, plan_id, trainer_id, date_of_birth) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO Members (full_name, age, sex, IC_Passport, phone, email_id, address, sign_up_date, plan_id, trainer_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         full_name,
         age,
@@ -151,7 +149,6 @@ const createMember = async (req, res) => {
         sign_up_date,
         plan_id,
         trainer_id,
-        date_of_birth,
       ]
     );
 
