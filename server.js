@@ -65,6 +65,7 @@ app.use("/api/v1/gym/announcements", require("./routes/announcementRoutes"));
 app.use("/api/v1/gym/plans", require("./routes/planRoutes"));
 app.use("/api/v1/gym/payments", require("./routes/paymentsRoutes"));
 app.use("/api/v1/gym/salaries", require("./routes/salariesRoutes"));
+app.use("/api/v1/gym/attendance", require("./routes/attendanceRoutes"));
 
 app.get("/", (req, res) => {
   res
